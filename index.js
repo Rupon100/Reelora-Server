@@ -26,14 +26,23 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // await client.connect();
-     
-    app.get('/', (req,res) => {
-        res.send('Running from mongodb')
-    })
+
+    const movieCollection = client.db("movieDB").collection('movies')
+    
 
     app.post('/addmovie', async(req, res) => {
-        
+        const newMovie = req.body;
+        const result = await movieCollection.insertOne(newMovie);
+        res.send(result)
+    });
+
+    app.get('/', async (req,res) => {
+        const query = movieCollection.find();
+        const movie = await query.toArray();
+        res.send(movie)
     })
+
+
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
