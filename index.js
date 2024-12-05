@@ -28,6 +28,7 @@ async function run() {
     // await client.connect();
 
     const movieCollection = client.db("movieDB").collection('movies')
+    const favCollection = client.db("movieDB").collection('favmovie')
     
     // add all movie
     app.post('/addmovie', async(req, res) => {
@@ -35,6 +36,7 @@ async function run() {
         const result = await movieCollection.insertOne(newMovie);
         res.send(result)
     });
+
     // get all movie in the api
     app.get('/', async (req,res) => {
         const query = movieCollection.find();
@@ -58,11 +60,23 @@ async function run() {
       res.send(result);
     })
 
+    // // handle fav movie
+    // app.post('/favmovie', async (req, res) => {
+    //   const favMovie = req.body;
+    //   const result = await favCollection.insertOne(favMovie);
+    //   res.send(result)
+    // })
+    // // show in api
+    // app.get('/favmovie', async(req, res) => {
+    //   const query = favCollection.find();
+    //   const favmovie = await query.toArray();
+    //   res.send(favmovie)
+    // })
 
 
 
 
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // await client.close();
