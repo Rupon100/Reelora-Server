@@ -8,10 +8,8 @@ require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 
-
 const name = process.env.USER_NAME;
 const key = process.env.USER_KEY;
-
 
 const uri = `mongodb+srv://${name}:${key}@cluster0.cne3f.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -25,8 +23,6 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // await client.connect();
-
     const movieCollection = client.db("movieDB").collection('movies')
     const favCollection = client.db("movieDB").collection('favmovie')
     
@@ -83,9 +79,6 @@ async function run() {
     })
 
 
-
-
-    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // await client.close();
