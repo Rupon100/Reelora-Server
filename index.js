@@ -60,18 +60,27 @@ async function run() {
       res.send(result);
     })
 
-    // // handle fav movie
-    // app.post('/favmovie', async (req, res) => {
-    //   const favMovie = req.body;
-    //   const result = await favCollection.insertOne(favMovie);
-    //   res.send(result)
-    // })
-    // // show in api
-    // app.get('/favmovie', async(req, res) => {
-    //   const query = favCollection.find();
-    //   const favmovie = await query.toArray();
-    //   res.send(favmovie)
-    // })
+    // handle fav movie
+    app.post('/favmovie', async (req, res) => {
+      const favMovie = req.body;
+      const result = await favCollection.insertOne(favMovie);
+      res.send(result)
+    })
+
+    // show in api
+    app.get('/favmovie', async(req, res) => {
+      const query = favCollection.find();
+      const favmovie = await query.toArray();
+      res.send(favmovie)
+    })
+
+    // fav item delete
+    app.delete('/favmovie/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: id};
+      const result = await favCollection.deleteOne(query);
+      res.send(result);
+    })
 
 
 
