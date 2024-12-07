@@ -5,7 +5,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 require('dotenv').config();
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 
 const name = process.env.USER_NAME;
@@ -76,6 +76,28 @@ async function run() {
       const query = {_id: id};
       const result = await favCollection.deleteOne(query);
       res.send(result);
+    })
+
+    // update movie item
+    app.put('/update/:id', async (req, res) => {
+      const id = req.params.id;
+      const upMovie = req.body;
+      const filter = {_id: new ObjectId(id)};
+      const options = {upsert: true};
+      console.log(id)
+      const updateUser = {
+        $set: {
+            title: upMovie.title,
+            poster: upMovie.poster,
+            genre: upMovie.genre,
+            time: upMovie.time,
+            rating: upMovie.rating,
+            year: upMovie.year,
+            msg: upMovie.msg,
+        }
+      };
+      const result = await movieCollection.updateOne(filter, updateUser, options);
+      res.send(result)
     })
 
 
