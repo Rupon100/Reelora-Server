@@ -39,13 +39,6 @@ async function run() {
       res.send(query);
     });
 
-    // app.get('/users/:email', async (req, res) => {
-    //   const email = await req.params.email;
-    //   console.log(userCollection)
-    //   const user = await userCollection.find(user => user.email == email);
-    //   res.send(user);
-    // })
-
     // add all movie
     app.post('/addmovie', async(req, res) => {
         const newMovie = req.body;
