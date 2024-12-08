@@ -5,7 +5,9 @@ const port = process.env.PORT || 5000;
 const app = express();
 require('dotenv').config();
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ 
+  origin: ['http://localhost:5173', 'https://reelora-83735.web.app/'] 
+}));
 app.use(express.json());
 
 const name = process.env.USER_NAME;
@@ -69,6 +71,9 @@ async function run() {
       res.send(result);
     })
 
+
+
+
     // handle fav movie
     app.post('/favmovie', async (req, res) => {
       const favMovie = req.body;
@@ -83,13 +88,27 @@ async function run() {
       res.send(favmovie)
     })
 
+
+
+    app.get('/favmovie/:email', async(req, res) => {
+      const mail = req.params.email;
+      const query = {email: mail} ;
+      const result = await favCollection.find(query).toArray();
+      res.send(result);
+    })
+    
+
+
+
+
+
     // fav item delete
     app.delete('/favmovie/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id: id};
+      const query = {_id: new ObjectId(id)};
       const result = await favCollection.deleteOne(query);
       res.send(result);
-    })
+    });
 
     // update movie item
     app.put('/update/:id', async (req, res) => {
@@ -97,7 +116,6 @@ async function run() {
       const upMovie = req.body;
       const filter = {_id: new ObjectId(id)};
       const options = {upsert: true};
-      console.log(id)
       const updateUser = {
         $set: {
             title: upMovie.title,
@@ -113,8 +131,6 @@ async function run() {
       res.send(result)
     })
 
-
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // await client.close();
   }
@@ -127,6 +143,4 @@ app.get('/', (req, res) => {
     res.send('server running');
 })
 
-app.listen(port, () => {
-    console.log('Running on port: ', port);
-})
+app.listen(port)
