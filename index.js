@@ -6,7 +6,8 @@ const app = express();
 require('dotenv').config();
 
 app.use(cors({ 
-  origin: ['http://localhost:5173', 'https://reelora-83735.web.app/'] 
+  origin: ['http://localhost:5173', 'https://reelora-83735.web.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 app.use(express.json());
 
