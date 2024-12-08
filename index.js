@@ -23,9 +23,29 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const movieCollection = client.db("movieDB").collection('movies')
-    const favCollection = client.db("movieDB").collection('favmovie')
+    const movieCollection = client.db("movieDB").collection('movies');
+    const favCollection = client.db("movieDB").collection('favmovie');
+    const userCollection = client.db("movieDB").collection('users');
     
+    // user information
+    app.post('/users', async(req,res) => {
+      const newUser = req.body;
+      const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    });
+
+    app.get('/users', async(req,res) => {
+      const query = await userCollection.find().toArray();
+      res.send(query);
+    });
+
+    // app.get('/users/:email', async (req, res) => {
+    //   const email = await req.params.email;
+    //   console.log(userCollection)
+    //   const user = await userCollection.find(user => user.email == email);
+    //   res.send(user);
+    // })
+
     // add all movie
     app.post('/addmovie', async(req, res) => {
         const newMovie = req.body;
